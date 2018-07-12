@@ -4,6 +4,23 @@
 import argparse
 
 
+class Queue:
+    def __init__(self):
+        self._value = []
+        self.length = 0
+
+    def enqueue(self, value):
+        self._value.append(value)
+        self.length += 1
+
+    def dequeue(self):
+        if self.length > 0:
+            value = self._value[0]
+            self._value = self._value[1:]
+            self.length -= 1
+            return value
+
+
 class TreeNode:
     def __init__(self, value, left, right):
         self.value = value
@@ -76,6 +93,55 @@ def read_from_file():
             node_input.append(i.strip().split(' '))
 
         return tree_list
+
+
+def buildTree_listLeaves():
+    # 从文件中读取
+    node_input_list = read_from_file()
+
+    # print(node_input_list)
+    result = []
+
+    for node_input in node_input_list:
+        # 使用数组来实现链表
+        tree = []
+        node_num = int(node_input[0][0])
+
+        # 标志tree中的节点是否有其他节点指向，如果没有就是root节点
+        check = [0]*node_num
+        root = None
+
+        for i in range(1, node_num+1):
+            node_list = node_input[i]
+
+            node_value = i - 1
+            node_left = node_list[0]
+            node_right = node_list[1]
+
+            if node_left != "-":
+                node_left = int(node_left)
+                check[node_left] = 1
+            else:
+                node_left = -1
+
+            if node_right != "-":
+                node_right = int(node_right)
+                check[node_right] = 1
+            else:
+                node_right = -1
+
+            node = TreeNode(node_value, node_left, node_right)
+            tree.append(node)
+
+        result.append(tree)
+
+        for k, v in enumerate(check):
+            if v == 0:
+                root = tree[k]
+                result.append(root)
+                break
+
+    return result
 
 
 def read_from_cmd():
