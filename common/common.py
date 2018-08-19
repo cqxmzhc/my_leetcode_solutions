@@ -27,6 +27,92 @@ class TreeNode:
         self.left = left
         self.right = right
 
+        self.left_height = 0
+        self.right_height = 0
+
+
+def Insert(tree, v):
+    if tree.value == None:
+        tree.value = v
+        return
+    else:
+        node = TreeNode(v, None, None)
+        while tree.value != None:
+            if v > tree.value:
+                tree.right_height += 1
+
+                if tree.right != None:
+                    tree = tree.right
+                else:
+                    tree.right = node
+                    return
+            else:
+                tree.left_height += 1
+                if tree.left != None:
+                    tree = tree.left
+                else:
+                    tree.left = node
+                    return
+
+            if tree.right_height-tree.left_height > 1:
+                if v > tree.right.value:
+                    # RR rotate
+                    tree = leftRotate(tree)
+                else:
+                    # RL rotate
+                    rightRotate(tree.right)
+                    tree = leftRotate(tree)
+
+            if tree.left_height - tree.right_height > 1:
+                if v < tree.left.value:
+                    # LL rotate
+                    tree = rightRotate(tree)
+                else:
+                    # LR rotate
+                    leftRotate(tree.left)
+                    tree = rightRotate(tree)
+
+
+def leftRotate(z):
+    y = z.right
+    t2 = y.left
+
+    y.left = z
+    z.right = t2
+
+    z.left_height = z.left.left_height + 1
+    z.right_height = z.right.right_height + 1
+
+    y.left_height = y.left.left_height + 1
+    y.right_height = y.right.right_height + 1
+
+    return y
+
+
+def rightRotate(z):
+    y = z.left
+    t3 = y.right
+
+    y.right = z
+    z.left = t3
+
+    z.left_height = z.left.left_height + 1
+    z.right_height = z.right.right_height + 1
+
+    y.left_height = y.left.left_height + 1
+    y.right_height = y.right.right_height + 1
+
+    return y
+
+
+def PreOrderTree(tree):
+    if tree == None:
+        return
+
+    print(tree.value)
+    PreOrderTree(tree.left)
+    PreOrderTree(tree.right)
+
 
 def buildTree():
     # 从文件中读取
