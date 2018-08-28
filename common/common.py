@@ -31,6 +31,21 @@ class TreeNode:
         self.right_height = 0
 
 
+class Stack:
+    def __init__(self):
+        self._value = []
+        self.length = 0
+
+    def push(self, value):
+        self._value.append(value)
+        self.length += 1
+
+    def pop(self):
+        if self.length > 0:
+            self.length -= 1
+            return self._value.pop()
+
+
 def Insert(tree, v):
     if tree.value == None:
         tree.value = v
@@ -230,8 +245,37 @@ def buildTree_listLeaves():
     return result
 
 
-def read_from_cmd():
-    pass
+def buildTestTree(level_order_seq):
+    """
+    根据层序遍历序列生成对应的二叉树
+    [1,2,None,3,None,4,...]
+    """
+    len_seq = len(level_order_seq)
+    level_order_map = {}
+    root = None
+    for i in range(1, len_seq+1):
+        if level_order_seq[i-1] == None:
+            continue
+
+        left = None
+        right = None
+
+        if 2*i-1 < len_seq:
+            left = level_order_map.setdefault(
+                2*i, TreeNode(level_order_seq[2*i-1], None, None))
+
+        if 2*i < len_seq:
+            right = level_order_map.setdefault(
+                2*i+1, TreeNode(level_order_seq[2*i], None, None))
+
+        if i == 1:
+            root = TreeNode(level_order_seq[i-1], left, right)
+        else:
+            parent = level_order_map[i]
+            parent.left = left
+            parent.right = right
+
+    return root
 
 
 if __name__ == '__main__':
