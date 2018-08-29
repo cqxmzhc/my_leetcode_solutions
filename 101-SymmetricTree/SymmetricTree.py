@@ -7,6 +7,7 @@ project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_dir)
 
 from common.common import TreeNode, Stack
+from collections import queue
 
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -61,6 +62,34 @@ class Solution(object):
         print(right_sub_tree_post_order_seq)
 
         return left_sub_tree_pre_order_seq == right_sub_tree_post_order_seq
+
+    def isSymmetricBFS(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if root == None:
+            return True
+
+        stack = [[root.left, root.right]]
+
+        while len(stack) > 0:
+            pair = stack.pop(0)
+
+            left = pair[0]
+            right = pair[1]
+
+            if left == None and right == None:
+                continue
+            if left == None or right == None:
+                return False
+            if left.val == right.val:
+                stack.extend([[left.left, right.right],
+                              [left.right, right.left]])
+            else:
+                return False
+
+        return True
 
 
 def buildTestTree(level_order_seq):
