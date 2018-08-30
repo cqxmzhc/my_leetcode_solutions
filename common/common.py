@@ -23,7 +23,7 @@ class Queue:
 
 class TreeNode:
     def __init__(self, value, left, right):
-        self.value = value
+        self.val = value
         self.left = left
         self.right = right
 
@@ -260,11 +260,11 @@ def buildTestTree(level_order_seq):
         left = None
         right = None
 
-        if 2*i-1 < len_seq:
+        if 2*i-1 < len_seq and level_order_seq[2*i-1]:
             left = level_order_map.setdefault(
                 2*i, TreeNode(level_order_seq[2*i-1], None, None))
 
-        if 2*i < len_seq:
+        if 2*i < len_seq and level_order_seq[2*i]:
             right = level_order_map.setdefault(
                 2*i+1, TreeNode(level_order_seq[2*i], None, None))
 
