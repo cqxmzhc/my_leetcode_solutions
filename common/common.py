@@ -22,10 +22,10 @@ class Queue:
 
 
 class TreeNode:
-    def __init__(self, value, left, right):
+    def __init__(self, value):
         self.val = value
-        self.left = left
-        self.right = right
+        self.left = None
+        self.right = None
 
         self.left_height = 0
         self.right_height = 0
@@ -44,6 +44,35 @@ class Stack:
         if self.length > 0:
             self.length -= 1
             return self._value.pop()
+
+
+def inorder(root):
+    if root == None:
+        return
+
+    inorder(root.left)
+    print(root.val)
+    inorder(root.right)
+
+
+def levelorder(root):
+    if root == None:
+        print("null")
+        return
+
+    node_stack = [root]
+    while len(node_stack) > 0:
+        node = node_stack.pop(0)
+        print(node.val)
+        if node.left:
+            node_stack.append(node.left)
+        else:
+            print("null")
+
+        if node.right:
+            node_stack.append(node.right)
+        else:
+            print("null")
 
 
 def Insert(tree, v):
