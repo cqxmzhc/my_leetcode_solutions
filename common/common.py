@@ -75,12 +75,64 @@ def levelorder(root):
             print("null")
 
 
+class MinHeap:
+    """
+    最小堆
+    """
+
+    def __init__(self):
+        """
+        数组存放节点
+        """
+        # 存放一个占位节点，使得有效值的下标从1开始， 方便计算
+        self._value = [None]
+        self.length = 0
+
+    def insert(self, val):
+        """
+        插入节点构成完全二叉树
+        """
+        self._value.append(val)
+        self.length += 1
+
+    def percUp(self, i):
+        """
+        调整为最小堆
+        """
+        i = self.length
+        while i/2 > 0:
+            if self._value[i] < self._value[i/2]:
+                self._value[i], self._value[i /
+                                            2] = self._value[i/2], self._value[i]
+
+                i = i/2
+            else:
+                break
+
+    def rootPath(self, i):
+        """
+        指定位置元素到root节点的路径打印，下表从1开始
+        """
+        while i > 0 and i <= self.length:
+            print(self._value[i])
+            i = i / 2
+
+
+def buidMinHeap(seq):
+    h = MinHeap()
+    for i in seq:
+        h.insert(i)
+        h.percUp(i)
+
+    return h
+
+
 def Insert(tree, v):
     if tree.value == None:
         tree.value = v
         return
     else:
-        node = TreeNode(v, None, None)
+        node = TreeNode(v)
         while tree.value != None:
             if v > tree.value:
                 tree.right_height += 1
