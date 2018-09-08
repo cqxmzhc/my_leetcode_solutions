@@ -343,14 +343,16 @@ def buildTestTree(level_order_seq):
 
         if 2*i-1 < len_seq and level_order_seq[2*i-1]:
             left = level_order_map.setdefault(
-                2*i, TreeNode(level_order_seq[2*i-1], None, None))
+                2*i, TreeNode(level_order_seq[2*i-1]))
 
         if 2*i < len_seq and level_order_seq[2*i]:
             right = level_order_map.setdefault(
-                2*i+1, TreeNode(level_order_seq[2*i], None, None))
+                2*i+1, TreeNode(level_order_seq[2*i]))
 
         if i == 1:
-            root = TreeNode(level_order_seq[i-1], left, right)
+            root = TreeNode(level_order_seq[i-1])
+            root.left = left
+            root.right = right
         else:
             parent = level_order_map[i]
             parent.left = left
