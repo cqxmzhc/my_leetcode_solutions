@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import argparse
+from collections import OrderedDict
 
 
 class Queue:
@@ -75,6 +76,14 @@ def levelorder(root):
             print("null")
 
 
+class MinHeapNode:
+    def __init__(self, val, freq):
+        self.val = val
+        self.freq = freq
+        self.left = None
+        self.right = None
+
+
 class MinHeap:
     """
     最小堆
@@ -95,17 +104,48 @@ class MinHeap:
         self._value.append(val)
         self.length += 1
 
+    def percDown(self, i):
+        left_node_index = i*2
+        right_node_index = left_node_index+1
+
+        # 有子节点
+        while left_node_index <= self.length:
+            left_node = self._value[left_node_index]
+            # 有两个子节点
+            if right_node_index <= self.length:
+                right_node = self._value[right_node_index]
+                if self._value[i].freq < left_node.freq and self._value[i].freq < right_node.freq:
+                    break
+                else:
+                    if left_node.freq < right_node.freq:
+                        self._value[i], self._value[left_node_index] = left_node, self._value[i]
+                        i = left_node_index
+                    else:
+                        self._value[i], self._value[right_node_index] = right_node, self._value[i]
+                        i = right_node_index
+
+                    left_node_index = 2*i
+                    right_node_index = left_node_index+1
+            else:
+                if self._value[i].freq < left_node.freq:
+                    break
+                else:
+                    self._value[i], self._value[left_node_index] = left_node, self._value[i]
+                    i = left_node_index
+
+                left_node_index = 2*i
+                right_node_index = left_node_index + 1
+
     def percUp(self, i):
         """
         调整为最小堆
         """
-        i = self.length
-        while i/2 > 0:
-            if self._value[i] < self._value[i/2]:
-                self._value[i], self._value[i /
-                                            2] = self._value[i/2], self._value[i]
+        while i//2 > 0:
+            if self._value[i].freq < self._value[i//2].freq:
+                self._value[i], self._value[i //
+                                            2] = self._value[i//2], self._value[i]
 
-                i = i/2
+                i = i//2
             else:
                 break
 
@@ -114,59 +154,42 @@ class MinHeap:
         指定位置元素到root节点的路径打印，下表从1开始
         """
         while i > 0 and i <= self.length:
-            print(self._value[i])
-            i = i / 2
+            print(self._value[i].val)
+            i = i // 2
+
+    def deleteMinNode(self, i):
+        """
+        删除指定位置i的节点
+        """
+        # 使用树中最后一个节点填充被删除节点的位置，保证删除后仍然是一棵完全二叉树
+        if i > self.length:
+            return
+
+        deleted_node = self._value[i]
+
+        replace_node = self._value[-1]
+        self._value[i] = replace_node
+        self._value = self._value[:-1]
+        self.length -= 1
+
+        # 与父节点比较
+        parent_node_index = i//2
+        # 替换节点位置为根节点或者值比父节点小
+        if i == 1 or replace_node.freq < self._value[parent_node_index].freq:
+            self.percDown(i)
+        else:
+            self.percUp(i)
+
+        return deleted_node
 
 
 def buidMinHeap(seq):
     h = MinHeap()
-    for i in seq:
-        h.insert(i)
-        h.percUp(i)
+    for i, v in enumerate(seq):
+        h.insert(v)
+        h.percUp(i+1)
 
     return h
-
-
-def Insert(tree, v):
-    if tree.value == None:
-        tree.value = v
-        return
-    else:
-        node = TreeNode(v)
-        while tree.value != None:
-            if v > tree.value:
-                tree.right_height += 1
-
-                if tree.right != None:
-                    tree = tree.right
-                else:
-                    tree.right = node
-                    return
-            else:
-                tree.left_height += 1
-                if tree.left != None:
-                    tree = tree.left
-                else:
-                    tree.left = node
-                    return
-
-            if tree.right_height-tree.left_height > 1:
-                if v > tree.right.value:
-                    # RR rotate
-                    tree = leftRotate(tree)
-                else:
-                    # RL rotate
-                    rightRotate(tree.right)
-                    tree = leftRotate(tree)
-
-            if tree.left_height - tree.right_height > 1:
-                if v < tree.left.value:
-                    # LL rotate
-                    tree = rightRotate(tree)
-                else:
-                    # LR rotate
-                    leftRotate(tree.left)
-                    tree = rightRotate(tree)
 
 
 def leftRotate(z):
@@ -343,16 +366,14 @@ def buildTestTree(level_order_seq):
 
         if 2*i-1 < len_seq and level_order_seq[2*i-1]:
             left = level_order_map.setdefault(
-                2*i, TreeNode(level_order_seq[2*i-1]))
+                2*i, TreeNode(level_order_seq[2*i-1], None, None))
 
         if 2*i < len_seq and level_order_seq[2*i]:
             right = level_order_map.setdefault(
-                2*i+1, TreeNode(level_order_seq[2*i]))
+                2*i+1, TreeNode(level_order_seq[2*i], None, None))
 
         if i == 1:
-            root = TreeNode(level_order_seq[i-1])
-            root.left = left
-            root.right = right
+            root = TreeNode(level_order_seq[i-1], left, right)
         else:
             parent = level_order_map[i]
             parent.left = left
@@ -361,5 +382,15 @@ def buildTestTree(level_order_seq):
     return root
 
 
+def buildHuffmanTree(alphabet_map):
+    """
+    """
+    pass
+
+
+def sortMapByValue(origin_map):
+    return OrderedDict(sorted(origin_map.items(), key=lambda kv: kv[1]))
+
+
 if __name__ == '__main__':
-    read_from_cmd()
+    pass
