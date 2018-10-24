@@ -62,8 +62,11 @@ class Solution(object):
         (root.val+...+b.val) - (root.val+...+a.val) == target =>
         (root.val+...+b.val)[x] - target == (root.val+...+a.val)[y]
         x,y的值都可以通过递归的方式获取
-        时间复杂度 O()
+        时间复杂度 O(N)
+        空间复杂度 O(NlgN)
         """
+
+        # 在root节点前想象一个虚拟节点，这个节点的值为0,即可将root节点当作其他节点同样模式处理
         path_sum_map = {0: 1}
         return self.helper(root, sum, 0, path_sum_map)
 
