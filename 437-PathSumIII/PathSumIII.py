@@ -59,36 +59,33 @@ class Solution(object):
     def pathSumRecur(self, root, sum):
         """
         如果路径a->..->b的和a.val+...+b.val==target,则路径root->...->a与路径root->...->b上的节点和满足如下关系
-        (root.val+...+b.val) - (root.val+...+a.val) == target => 
-        (root.val+...+b.val)[y] - target == (root.val+...+a.val)[y]
+        (root.val+...+b.val) - (root.val+...+a.val) == target =>
+        (root.val+...+b.val)[x] - target == (root.val+...+a.val)[y]
         x,y的值都可以通过递归的方式获取
+        时间复杂度 O()
         """
-        path_sum_map = {0: 0}
+        path_sum_map = {0: 1}
         return self.helper(root, sum, 0, path_sum_map)
 
     def helper(self, root, sum, so_far, path_sum_map):
-        import pdb
-        pdb.set_trace()
         count = 0
         if not root:
             return count
 
         complement = so_far+root.val - sum
         if complement in path_sum_map:
-            path_sum_map[complement] += 1
-            count += 1
-        else:
-            path_sum_map[complement] = 0
+            count += path_sum_map[complement]
 
-        path_sum_map[so_far+root.val] = 0
+        if so_far+root.val not in path_sum_map:
+            path_sum_map[so_far+root.val] = 0
 
-        left_count = self.helper(root.left, sum, so_far+root.val, path_sum_map)
+        path_sum_map[so_far+root.val] += 1
+        count += self.helper(root.left, sum, so_far+root.val, path_sum_map) + \
+            self.helper(root.right, sum, so_far+root.val, path_sum_map)
+        # 排除非父节点路径上的相同值
         path_sum_map[so_far+root.val] -= 1
-        right_count = self.helper(
-            root.right, sum, so_far+root.val, path_sum_map)
 
-        # 和相同，路径不同。
-        return count + left_count + right_count
+        return count
 
 
 if __name__ == '__main__':
