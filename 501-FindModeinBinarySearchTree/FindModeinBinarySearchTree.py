@@ -28,6 +28,8 @@ class Solution(object):
         """
         :type root: TreeNode
         :rtype: List[int]
+        时间复杂度O(N)
+        空间复杂度O(1)
         """
         if not root:
             return
@@ -51,8 +53,45 @@ class Solution(object):
 
         return self.modes
 
+    def findModeIterate(self, root):
+        """
+        中序遍历
+        """
+        if not root:
+            return
+        stack = [root]
+        current_node = None
+
+        import pdb
+        pdb.set_trace()
+        while current_node or stack:
+            if not current_node:
+                current_node = stack.pop()
+                continue
+
+            if current_node.right:
+                stack.append(current_node.right)
+
+            if not current_node.left:
+                if current_node.val == self.pre_val:
+                    self.current_count += 1
+                else:
+                    self.current_count = 1
+
+                if self.current_count > self.max_count:
+                    self.max_count = self.current_count
+                    self.modes = [current_node.val]
+                elif self.current_count == self.max_count:
+                    self.modes.append(current_node.val)
+
+                self.pre_val = current_node.val
+
+            current_node = current_node.left
+
+        return self.modes
+
 
 if __name__ == '__main__':
-    root = buildTestTree([1, None, 2])
+    root = buildTestTree([1, None, 2, 2])
     s = Solution()
-    print(s.findMode(root))
+    print(s.findModeIterate(root))
