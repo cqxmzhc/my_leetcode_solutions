@@ -57,22 +57,23 @@ class Solution(object):
         """
         中序遍历
         """
+
         if not root:
-            return
-        stack = [root]
-        current_node = None
+            return self.modes
+        stack = []
 
-        import pdb
-        pdb.set_trace()
+        current_node = root
         while current_node or stack:
+            left_visited = False
             if not current_node:
-                current_node = stack.pop()
-                continue
+                left_visited, current_node = stack.pop()
 
-            if current_node.right:
-                stack.append(current_node.right)
-
-            if not current_node.left:
+            # 左节点存在且没有被访问过，继续遍历左子树
+            if current_node.left and not left_visited:
+                stack.append((True, current_node))
+                current_node = current_node.left
+            # 左节点不存在或者已经被访问
+            else:
                 if current_node.val == self.pre_val:
                     self.current_count += 1
                 else:
@@ -85,8 +86,7 @@ class Solution(object):
                     self.modes.append(current_node.val)
 
                 self.pre_val = current_node.val
-
-            current_node = current_node.left
+                current_node = current_node.right
 
         return self.modes
 

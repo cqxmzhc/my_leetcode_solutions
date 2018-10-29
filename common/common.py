@@ -357,41 +357,29 @@ def buildTestTree(level_order_seq):
     len_seq = len(level_order_seq)
     level_order_map = {}
     root = None
-    # for i in range(0, len_seq):
-    #     left = None
-    #     right = None
-
-    #     if 2*i+1 < len_seq:
-    #         left = level_order_map.setdefault(
-    #             2*i+1, TreeNode(level_order_seq[2*i+1]))
-
-    #     if 2*i+2 < len_seq:
-    #         right = level_order_map.setdefault(
-    #             2*i+2, TreeNode(level_order_seq[2*i+2]))
-
-    #     if i == 0:
-    #         root = TreeNode(level_order_seq[i])
-    #         root.left = left
-    #         root.right = right
-    #     else:
-    #         parent = level_order_map[i]
-    #         parent.left = left
-    #         parent.right = right
-
     for i in range(0, len_seq):
-        import pdb
-        pdb.set_trace()
         if not level_order_seq[i]:
             continue
 
-        current_node = TreeNode(level_order_seq[i])
-        if i == 0:
-            root = current_node
+        left = None
+        right = None
 
-        if 2*i+1 < len_seq and level_order_seq[2*i+1]:
-            current_node.left = TreeNode(level_order_seq[2*i+1])
-        if 2*i+2 < len_seq and level_order_seq[2*i+2]:
-            current_node.right = TreeNode(level_order_seq[2*i+2])
+        if i+1 < len_seq and level_order_seq[i+1]:
+            left = level_order_map.setdefault(
+                i+1, TreeNode(level_order_seq[i+1]))
+
+        if i+2 < len_seq and level_order_seq[i+2]:
+            right = level_order_map.setdefault(
+                i+2, TreeNode(level_order_seq[i+2]))
+
+        if i == 0:
+            root = TreeNode(level_order_seq[i])
+            root.left = left
+            root.right = right
+        else:
+            parent = level_order_map[i]
+            parent.left = left
+            parent.right = right
 
     return root
 
