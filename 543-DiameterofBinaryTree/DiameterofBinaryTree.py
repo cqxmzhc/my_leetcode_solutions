@@ -5,7 +5,6 @@ import copy
 import os
 import sys
 
-
 project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_dir)
 
@@ -57,11 +56,10 @@ class Solution(object):
         """
         :type root: TreeNode
         :rtype: int
+        时间复杂度: O(N)
         """
-        if not root:
-            return 0
-
-        # 记录遍历过程中当前子树的最大直径
+        # 树的直径定义为这个树中任意两个节点的之间边长度的最大值，这个值一定是以某个节点为根的子树的左右子树深度之和
+        # 所以求树的直径即是遍历每个节点求得以此节点为根的树的左右子树深度之和的最大值
         self.dia = 0
 
         def depthOfBinaryTree(root):
@@ -71,7 +69,6 @@ class Solution(object):
             depth_of_left_tree = depthOfBinaryTree(root.left)
             depth_of_right_tree = depthOfBinaryTree(root.right)
 
-            # 从下往上, 树的直径=左子树深度+右子树深度
             if depth_of_left_tree + depth_of_right_tree > self.dia:
                 self.dia = depth_of_left_tree + depth_of_right_tree
 
