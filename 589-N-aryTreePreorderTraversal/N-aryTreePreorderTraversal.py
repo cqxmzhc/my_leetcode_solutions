@@ -22,6 +22,8 @@ class Solution(object):
         """
         :type root: Node
         :rtype: List[int]
+        时间复杂度:O(n)
+        空间复杂度:O(n)
         """
         if not root:
             return []
