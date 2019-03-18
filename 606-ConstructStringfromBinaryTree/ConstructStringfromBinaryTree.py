@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from common.common import TreeNode, buildTestTree
 import copy
 import os
 import sys
+
+from common.common import TreeNode, buildTestTree
 
 project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_dir)
@@ -30,10 +31,10 @@ class Solution(object):
             return str(t.val)
 
         if not t.left:
-            return str(t.val)+ "()(" + self.tree2str(t.right) + ")"
+            return str(t.val) + "()(" + self.tree2str(t.right) + ")"
 
         if not t.right:
-            return str(t.val) + "(" + self.tree2str(t.left) +")"
+            return str(t.val) + "(" + self.tree2str(t.left) + ")"
 
         return str(t.val) + "(" + self.tree2str(t.left) + ")(" + self.tree2str(t.right) + ")"
 
@@ -45,14 +46,23 @@ class Solution(object):
         layer = [t]
         while layer:
             ele = layer.pop(0)
-            if ele in ["(", ")"]:
+            if ele in ["(",")"]:
                 res += ele
             else:
                 if not ele.left and not ele.right:
-                    res += "(" +ele.val  + ")"
+                    res += str(ele.val)
                 elif not ele.left:
-                    res +=  "()(" + ele.val + "("
-                
+                    res += str(ele.val) + "()("
+                    layer = [ele.right, ")"] + layer
+                elif not ele.right:
+                    res += str(ele.val) + "("
+                    layer = [ele.left, ")"] + layer
+                else:
+                    res += str(ele.val) + "("
+                    layer = [ele.left, ")", "(", ele.right, ")"] + layer
+
+        return res
+
 
 if __name__ == '__main__':
     pass
