@@ -46,22 +46,18 @@ class Solution(object):
         layer = [t]
         while layer:
             ele = layer.pop(0)
-            if ele in ["(",")"]:
+            if ele == ")":
                 res += ele
             else:
-                if not ele.left and not ele.right:
-                    res += str(ele.val)
-                elif not ele.left:
-                    res += str(ele.val) + "()("
+                res += "(" + str(ele.val)
+                if not ele.left and ele.right:
+                    res += "()"
+                if ele.right:
                     layer = [ele.right, ")"] + layer
-                elif not ele.right:
-                    res += str(ele.val) + "("
+                if ele.left:
                     layer = [ele.left, ")"] + layer
-                else:
-                    res += str(ele.val) + "("
-                    layer = [ele.left, ")", "(", ele.right, ")"] + layer
 
-        return res
+        return res[1:]
 
 
 if __name__ == '__main__':
