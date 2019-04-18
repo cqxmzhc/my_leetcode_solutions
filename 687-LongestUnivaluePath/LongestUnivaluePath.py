@@ -20,40 +20,33 @@ sys.path.insert(0, project_dir)
 
 class Solution(object):
     longest = 0
+
     def longestUnivaluePath(self, root):
         """
         :type root: TreeNode
         :rtype: int
         """
-        self.univaluePath(root, False)
+        self.univaluePath(root)
         return self.longest
 
-    def univaluePath(self, root, with_parent):
+    def univaluePath(self, root):
         if not root:
             return 0
 
-        left_univalue_path = 0
-        right_univalu_path = 0
-        if root.left:
-            if root.val == root.left.val:
-                left_univalue_path = 1 + self.univaluePath(root.left, True)
-            else:
-                self.univaluePath(root.left, False)
+        left = self.univaluePath(root.left)
+        right = self.univaluePath(root.right)
 
-        if root.right:
-            if root.val == root.right.val:
-                right_univalu_path = 1 + self.univaluePath(root.right, True)
-            else:
-                self.univaluePath(root.right, False)
+        arrow_left = 0
+        arrow_right = 0
+        if root.left and root.left.val == root.val:
+            arrow_left = 1 + left
+        if root.right and root.right.val == root.val:
+            arrow_right = 1 + left
 
-        tmp = left_univalue_path + right_univalu_path
-        if self.longest < tmp:
-            self.longest = tmp
+        self.longest = max(self.longest, arrow_left + arrow_right)
 
-        if with_parent:
-            return left_univalue_path if left_univalue_path > right_univalu_path else right_univalu_path
-        else:
-            return left_univalue_path + right_univalu_path
+        return max(left, right)
+
 
 if __name__ == '__main__':
     pass
