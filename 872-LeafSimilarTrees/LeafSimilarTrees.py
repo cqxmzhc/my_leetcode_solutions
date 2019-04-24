@@ -34,13 +34,31 @@ class Solution(object):
             if root.right:
                 dfs(root.right, leafs)
 
+        def dfsIterate(root, leafs):
+            stack_node = [root]
+
+            while stack_node:
+                node = stack_node.pop()
+                if not node.left and not node.right:
+                    leafs.append(node.val)
+
+                if node.right:
+                    stack_node.append(node.right)
+                if node.left:
+                    stack_node.append(node.left)
+
+
         left_leafs = []
-        dfs(root1, left_leafs)
+        # dfs(root1, left_leafs)
+        dfsIterate(root1, left_leafs)
 
         right_leafs = []
-        dfs(root2, right_leafs)
+        # dfs(root2, right_leafs)
+        dfsIterate(root2, right_leafs)
 
         return left_leafs == right_leafs
+
+            
 
 
 if __name__ == '__main__':
