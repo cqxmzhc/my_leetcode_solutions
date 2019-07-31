@@ -105,6 +105,8 @@ class Solution(object):
                     dp[j] = min(dp[j-1], dp_diagonal, dp[j])+1
 
                     maxsqlen = max(maxsqlen, dp[j])
+                else:
+                    dp[j] = 0
 
                 dp_diagonal = tmp
 
