@@ -54,6 +54,35 @@ class Solution(object):
 
         return maxsqlen * maxsqlen
 
+    def maximalSquareDP(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        # 矩阵中的每个节点表示待求正方体的右下角节点
+        # dp[i][j] = min(dp[i][j-1], dp[i-1][j-1], dp[i-1][j]) + 1
+        rows = len(matrix)
+        if rows == 0:
+            return 0
+        cols = len(matrix[0])
+
+        maxsqlen = 0
+        dp = [[0 for j in range(0, cols)] for i in range(0, rows)]
+        for i in range(rows):
+            for j in range(cols):
+                if matrix[i][j] == "1":
+                    # 第一行第一列的节点
+                    if i == "0" or j == "0":
+                        dp[i][j] = 1
+                    else:
+                        dp[i][j] = min(dp[i][j-1], dp[i-1]
+                                       [j-1], dp[i-1][j]) + 1
+
+                    if dp[i][j] > maxsqlen:
+                        maxsqlen = dp[i][j]
+
+        return maxsqlen * maxsqlen
+
 
 if __name__ == "__main__":
     s = Solution()
