@@ -72,7 +72,7 @@ class Solution(object):
             for j in range(cols):
                 if matrix[i][j] == "1":
                     # 第一行第一列的节点
-                    if i == "0" or j == "0":
+                    if i == 0 or j == 0:
                         dp[i][j] = 1
                     else:
                         dp[i][j] = min(dp[i][j-1], dp[i-1]
@@ -83,8 +83,35 @@ class Solution(object):
 
         return maxsqlen * maxsqlen
 
+    def maximalSquareDPM(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        # 矩阵中的每个节点表示待求正方体的右下角节点
+        # dp[i][j] = min(dp[i][j-1], dp[i-1][j-1], dp[i-1][j]) + 1
+        rows = len(matrix)
+        if rows == 0:
+            return 0
+        cols = len(matrix[0])
+
+        maxsqlen = 0
+        dp_diagonal = 0
+        dp = [0] * (cols+1)
+        for i in range(1, rows+1):
+            for j in range(1, cols+1):
+                tmp = dp[j]
+                if matrix[i-1][j-1] == "1":
+                    dp[j] = min(dp[j-1], dp_diagonal, dp[j])+1
+
+                    maxsqlen = max(maxsqlen, dp[j])
+
+                dp_diagonal = tmp
+
+        return maxsqlen * maxsqlen
+
 
 if __name__ == "__main__":
     s = Solution()
-    s.maximalSquare([["1", "0", "1", "0", "0"], ["1", "0", "1", "1", "1"], [
-                    "1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]])
+    s.maximalSquareDPM([["1", "0", "1", "0"], ["1", "0", "1", "1"], [
+                       "1", "0", "1", "1"], ["1", "1", "1", "1"]])
