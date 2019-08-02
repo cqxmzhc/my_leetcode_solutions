@@ -74,6 +74,40 @@ class Solution(object):
 
         return dp[n]
 
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        广度优先
+        """
+        if n < 2:
+            return n
+        ps = None
+        to_check = [n]
+        while True:
+            t = i*i
+            if t <= n:
+                ps.append(t)
+                i += 1
+            else:
+                break
+
+        # 层序遍历
+        while to_check:
+            tmp = set()
+            count = 1
+            for i in to_check:
+                for j in ps:
+                    if i == j:
+                        return count
+                    if i < j:
+                        # 当前路径无法凑出目标值
+                        break
+                    tmp.append(i-j)
+                    count += 1
+
+            to_check = tmp
+
 
 if __name__ == "__main__":
     s = Solution()
