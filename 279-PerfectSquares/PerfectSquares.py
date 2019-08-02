@@ -47,6 +47,33 @@ class Solution(object):
 
         return dp[n]
 
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        ps = []
+        dp = {0: 0, 1: 1, 2: 2, 3: 3}
+        i = 1
+        while True:
+            t = i*i
+            if t <= n:
+                ps.append(t)
+                i += 1
+            else:
+                break
+
+        for i in range(1, n+1):
+            tmp = float("+inf")
+            for num in ps:
+                if i - num in dp and dp[i-num] < tmp:
+                    tmp = dp[i-num]
+
+            dp[i] = tmp+1
+
+        return dp[n]
+
 
 if __name__ == "__main__":
     s = Solution()
