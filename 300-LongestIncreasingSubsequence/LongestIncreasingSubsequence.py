@@ -5,6 +5,7 @@ import copy
 import os
 import sys
 
+from common.common import TreeNode, buildTestTree
 
 project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_dir)
@@ -23,8 +24,32 @@ class Solution(object):
         if len(nums) < 2:
             return len(nums)
 
-        self.helperDPT(nums, len(nums))
-        return self.max_len
+        # self.helperDPT(nums, len(nums))
+        # return self.max_len
+        m = [float("+inf") for i in range(0, len(nums)+1)]
+        m[0] = float("-inf")
+
+        # k最大子序列长度
+        k = 0
+
+        for i in range(0, len(nums)):
+            if a[i] > m[k]:
+                k += 1
+                m[k] = a[i]
+            else:
+                first = 0
+                last = k
+
+            while last > first+1:
+                mid = (first + last) // 2
+                if m[mid] < a[i]:
+                    first = mid
+                else:
+                    last = mid
+
+            m[last] = mid
+
+        return k
 
     def helper(self, nums, pre):
         """
@@ -82,4 +107,4 @@ class Solution(object):
 
 if __name__ == '__main__':
     s = Solution()
-    print(s.lengthOfLIS([8, 1, 2, 7, 3, 8, 9]))
+    print(s.lengthOfLIS([2, 2])
