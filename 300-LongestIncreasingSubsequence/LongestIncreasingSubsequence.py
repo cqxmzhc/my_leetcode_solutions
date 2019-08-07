@@ -33,21 +33,22 @@ class Solution(object):
         k = 0
 
         for i in range(0, len(nums)):
-            if a[i] > m[k]:
+            first = last = mid = 0
+            if nums[i] > m[k]:
                 k += 1
-                m[k] = a[i]
+                m[k] = nums[i]
             else:
                 first = 0
                 last = k
 
-            while last > first+1:
-                mid = (first + last) // 2
-                if m[mid] < a[i]:
-                    first = mid
-                else:
-                    last = mid
+                while last > first+1:
+                    mid = (first + last) // 2
+                    if m[mid] < nums[i]:
+                        first = mid
+                    else:
+                        last = mid
 
-            m[last] = mid
+                m[last] = nums[i]
 
         return k
 
