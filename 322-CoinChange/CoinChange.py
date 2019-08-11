@@ -16,29 +16,14 @@ class Solution(object):
         :type amount: int
         :rtype: int
         """
-        if amount == 0:
-            return 0
-        dp = [-1] * (amount+1)
-        dp[0] = -1
-        dp[1] = 1 if 1 in coins else -1
-
-        for i in range(2, amount+1):
-            import pdb
-            pdb.set_trace()
-            min_num = float("+inf")
+        dp = [0] + [float("+inf")] * (amount)
+        for i in range(1, amount+1):
             for j in coins:
-                if i == j:
-                    dp[i] = 1
-                    break
-                if i - j > 0:
-                    if dp[i-j] != -1 and dp[i-j] + 1 < min_num:
-                        min_num = dp[i-j] + 1
-            if min_num != float("+inf"):
-                dp[i] = min_num
+                if i - j >= 0:
+                    dp[i] = min(dp[i], dp[i-j]+1)
 
-        return dp[amount]
+        return dp[-1] if dp[-1] != float("+inf") else -1
 
 
 if __name__ == '__main__':
-    s = Solution()
-    s.coinChange([1, 2], 2)
+    pass
