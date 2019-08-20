@@ -16,30 +16,20 @@ class Solution(object):
         :rtype: int
         """
         length = len(nums)
-        if length < 2:
-            return length
+        if length < 1:
+            return 0
 
-        dp = [0] * length
-        dp[0] = 1
+        up = [1] * length
+        down = [1] * length
 
-        # 保存子序列的最后两个元素在原list中的索引
-        parent = [0] * length
-
-        maxSize = 1
-        if nums[1] != nums[0]:
-            maxSize = 2
-            dp[1] = 2
-        for i in range(2, length):
+        for i in range(1, length):
             for j in range(i-1, -1, -1):
-                if (nums[i] - nums[j]) * (nums[j] - nums[parent[j]]) < 0:
-                    if dp[i] < dp[j] + 1:
-                        dp[i] = dp[j] + 1
-                        parent[i] = j
+                if nums[i] > nums[j] and up[i] < down[j] + 1:
+                    up[i] = down[j] + 1
+                if nums[i] < nums[j] and down[i] < up[j] + 1:
+                    down[i] = up[j] + 1
 
-            if maxSize < dp[i]:
-                maxSize = dp[i]
-
-        return maxSize
+        return max(up + down)
 
 
 if __name__ == '__main__':
