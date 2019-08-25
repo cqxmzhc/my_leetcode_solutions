@@ -38,6 +38,36 @@ class Solution(object):
 
         return dp[-1][-1]
 
+    def canPartition(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        if not nums:
+            return True
+        sum_all = sum(nums)
+        # 是否是偶数
+        if sum_all & 1 == 1:
+            return False
+        sum_half = sum_all / 2
+
+        # dp[i][j]表示是否能从前i个元素中算出和为j的子序列
+        dp = [False for _ in range(sum_half+1)]
+
+        # base case
+        # 不选择任何元素
+        dp[0] = True
+
+        # 状态转移方程
+        # dp[i][j] = dp[i-1][j] 不选择元素nums[i]
+        # dp[i][j] = dp[i-1][j-nums[i]] 选择元素nums[i]
+        for num in nums:
+            for j in range(sum_half, 0, -1):
+                if j >= num:
+                    dp[j] = dp[j] or dp[j-num]
+
+        return dp[-1]
+
 
 if __name__ == '__main__':
     pass
