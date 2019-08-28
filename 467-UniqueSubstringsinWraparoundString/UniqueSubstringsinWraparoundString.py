@@ -19,7 +19,7 @@ class Solution(object):
         # 以某个字母结尾的在s中连续的字符串的长度(s中的个数)
         max_len = 0
         for i in range(len(p)):
-            if i > 0 and (ord(p[i]) - ord(p(i-1)) == 1 or ord(p(i-1))-ord(p(i)) == 25):
+            if i > 0 and (ord(p[i]) - ord(p[i-1]) == 1 or ord(p[i-1])-ord(p[i]) == 25):
                 max_len += 1
             else:
                 max_len = 1
