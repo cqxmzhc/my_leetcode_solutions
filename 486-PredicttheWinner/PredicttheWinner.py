@@ -14,7 +14,27 @@ class Solution(object):
         :rtype: bool
         """
         # O(2^n)
-        return self.winner(nums, 0, len(nums)-1, 1) >= 0
+        # return self.winner(nums, 0, len(nums)-1, 1) >= 0
+
+        length = len(nums)
+        # db[i][j]表示player1从数组nums[i:j]中所选数字之和与player2所选数字之和的差
+        dp = [[0 for _ in range(length)] for _ in range(length)]
+
+        # basecase 选取到最后一个元素
+        for i in range(length):
+            dp[i][i] = nums[i]
+
+        # 选取数组中第一个或最后一个元素
+        # 状态转移方程 dp[i][j] = max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])
+        for k in range(1, length):
+            i = 0
+            j = k
+            while i < length and j < length:
+                dp[i][j] = max(nums[i]-dp[i+1][j], nums[j]-dp[i][j-1])
+                i += 1
+                j += 1
+
+        return dp[0][-1] >= 0
 
     # 返回当前player所选数字的和与对方player所选数字的和之差
     def winner(self, nums, s, e, turn):
