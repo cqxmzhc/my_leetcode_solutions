@@ -27,13 +27,10 @@ class Solution(object):
 
         # # 选取数组中第一个或最后一个元素
         # # 状态转移方程 dp[i][j] = max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])
-        # for k in range(1, length):
-        #     i = 0
-        #     j = k
-        #     while i < length and j < length:
-        #         dp[i][j] = max(nums[i]-dp[i+1][j], nums[j]-dp[i][j-1])
-        #         i += 1
-        #         j += 1
+        # for out in range(1, length):
+        #     for i in range(0, length-out):
+        #         j = i + out
+        #         dp[i][j] = max(nums[i] - dp[i+1][j], nums[j]-dp[i][j-1])
 
         # return dp[0][-1] >= 0
 
