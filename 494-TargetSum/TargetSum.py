@@ -49,10 +49,21 @@ class Solution(object):
 
         # ??????: dp[i][j] = dp[i-1][j] + dp[i][j-nums[i]]
         for i in range(1, len(nums)+1):
-            for j in range(1, S+1):
+            for j in range(nums[i-1], S+1):
                 dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i-1]]
 
         return dp[-1][-1]
+
+    def dp(self, nums, S):
+        dp = [0] * (S+1)
+        # ?n????????0??
+        dp[0] = 1
+
+        for i in range(len(nums)):
+            for j in range(S, nums[i]-1, -1):
+                dp[j] = dp[j] + dp[j-nums[i]]
+
+        return dp[S]
 
 
 if __name__ == '__main__':
