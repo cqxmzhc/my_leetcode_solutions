@@ -65,6 +65,21 @@ class Solution(object):
 
         return dp[S]
 
+    def iterate(self, nums, S):
+        if not nums:
+            return 0
+        d = {nums[0]: 1, -nums[0]: 1} if nums[0] != 0 else {0: 2}
+
+        for i in range(1, len(nums)):
+            t = {}
+            for j in d:
+                t[j+nums[i]] = t.get(j+nums[i], 0) + d.get(j, 0)
+                t[j-nums[i]] = t.get(j-nums[i], 0) + d.get(j, 0)
+
+            d = t
+
+        return d.get(S, 0)
+
 
 if __name__ == '__main__':
     pass
