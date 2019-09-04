@@ -20,23 +20,23 @@ class Solution(object):
         dp = [[False for _ in range(length)] for _ in range(length)]
 
         # basecase dp[i][i] = True
+        count = length
         for i in range(length):
             dp[i][i] = True
 
+        for i in range(length-1):
+            if s[i] == s[i+1]:
+                dp[i][i+1] = True
+                count += 1
+
         # 状态转移方程
         # dp[i][j] = dp[i+1][j-1] and s[i] == s[j]
-        count = 0
-        for l range(2, length+1):
+        for l in range(3, length+1):
             for i in range(length-l+1):
                 j = i+l-1
-                if l == 2:
-                    if s[i] == s[j]:
-                        dp[i][j] = True
-                        count += 1
-                else:
-                    if dp[i+1][j-1] and s[i] == s[j]:
-                        dp[i][j] = True
-                        count += 1
+                if dp[i+1][j-1] and s[i] == s[j]:
+                    dp[i][j] = True
+                    count += 1
 
         return count
 
