@@ -21,9 +21,6 @@ class Solution(object):
 
         # 状态转移方程 dp[i] = dp[j] + (i/j) if i % j == 0
         for i in range(4, n+1):
-            if i == 12:
-                # import pdb
-                # pdb.set_trace()
             for j in range(i-1, 1, -1):
                 if i % j == 0:
                     dp[i] = dp[j] + (i/j)
