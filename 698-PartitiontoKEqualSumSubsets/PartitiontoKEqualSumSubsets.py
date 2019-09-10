@@ -13,11 +13,15 @@ class Solution(object):
         :type nums: List[int]
         :type k: int
         :rtype: bool
+        思路： 递归，依次遍历nums数组，对元素i, 从剩下的n-1个元素中找出m个数使得元素i与这m个数的和为sum_nums / k, 再递归剩下的n-m-1个数
+        时间复杂度: ?
         """
         sum_all = sum(nums)
         if k <= 0 or len(nums) < k or sum_all % k != 0:
             return False
 
+        # 只考虑正数的情况， 可以将nums排序，先考虑比较大的元素
+        # nums.sort(reverse=True)
         return self.canPartition(nums, [0]*len(nums), 0, 0, 0, k, sum_all/k)
 
     def canPartition(self, nums, visited, startIndex, curSum, curNum, k, target):
